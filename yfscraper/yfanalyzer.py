@@ -35,6 +35,12 @@ class YFAnalyzer:
         except:
             return 0
         
+    def __get_rendement_moyen_dividendes(self):
+        try:
+            return float(format((self.yf_scraper_manager.get_rendement_dividende()/self.yf_scraper_manager.get_cours()),'.2f'))
+        except:
+            return 0
+        
     def get_analyze_line(self):
         return ([self.yf_scraper_manager.get_secteur(),
                  self.yf_scraper_manager.get_activite(),
@@ -45,4 +51,4 @@ class YFAnalyzer:
                  self.__get_ratio_cours_VANTPA(),
                  self.__get_ratio_cours_VANNPA(),
                  self.__get_solvabilite(),
-                 self.yf_scraper_manager.get_rendement_dividende()])
+                 self.__get_rendement_moyen_dividendes()])

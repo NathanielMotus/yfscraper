@@ -15,7 +15,7 @@ YF_URL_ROOT="https://fr.finance.yahoo.com/quote/"
 YF_URL_BALANCE_SHEET_SUFFIX="/balance-sheet"
 YF_URL_STAT_SUFFIX="/key-statistics"
 YF_URL_PROFILE_SUFFIX="/profile"
-UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yahoo_finance_scraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
+UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
 
 
 class YFISINScraperManager:
@@ -35,30 +35,33 @@ class YFISINScraperManager:
 
         # récupère le ticker
         self.__get_ticker_by_ISIN()
+
+        # si le ticker n'est pas vide, récupère les infos
+        if self.yf_ticker!='':
                 
-        # instancie yf_stat_scraper
-        YFISINScraperManager.counter+=1
-        print(format(YFISINScraperManager.counter)+" "+self.yf_ticker)
-        self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_STAT_SUFFIX)
-        self.yf_stat_scraper=YFStatScraper(self.driver)
-        # charge yf_stat_scraper
-        self.yf_stat_scraper.get_statistics()
+            # instancie yf_stat_scraper
+            YFISINScraperManager.counter+=1
+            print(format(YFISINScraperManager.counter)+" "+self.yf_ticker)
+            self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_STAT_SUFFIX)
+            self.yf_stat_scraper=YFStatScraper(self.driver)
+            # charge yf_stat_scraper
+            self.yf_stat_scraper.get_statistics()
 
-        # instancie yf_balance_sheet_scraper
-        self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_BALANCE_SHEET_SUFFIX)
-        # clique le bouton 'Trimestriel'
-        self.__wait_and_click_button_by_text('Trimestriel')
-        self.yf_balance_sheet_scraper=YFBalanceSheetScraper(self.driver)
-        # charge yf_balance_sheet_scraper
-        self.yf_balance_sheet_scraper.get_balance_sheet()
+            # instancie yf_balance_sheet_scraper
+            self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_BALANCE_SHEET_SUFFIX)
+            # clique le bouton 'Trimestriel'
+            self.__wait_and_click_button_by_text('Trimestriel')
+            self.yf_balance_sheet_scraper=YFBalanceSheetScraper(self.driver)
+            # charge yf_balance_sheet_scraper
+            self.yf_balance_sheet_scraper.get_balance_sheet()
 
-        #instancie yf_profile_scraper
-        self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_PROFILE_SUFFIX)
-        self.yf_profile_scraper=YFProfileScraper(self.driver)
-        self.yf_profile_scraper.get_profile()
+            #instancie yf_profile_scraper
+            self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_PROFILE_SUFFIX)
+            self.yf_profile_scraper=YFProfileScraper(self.driver)
+            self.yf_profile_scraper.get_profile()
 
-        # penser à quitter le driver quand c'est fini
-        #self.driver.quit
+            # penser à quitter le driver quand c'est fini
+            #self.driver.quit
 
     def __start_driver(self):
         self.driver.install_addon(UBLOCK_EXTENSION_PATH,temporary=True)
@@ -111,6 +114,7 @@ class YFISINScraperManager:
             self.yf_ticker=search_result.text
         except:
             print("Pas de résultat")
+            search_box.clear()
 
     def get_tresorerie_totale(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie totale')[0]

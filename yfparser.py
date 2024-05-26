@@ -2,8 +2,10 @@ from yfscraper.yfisinscrapermanager import YFISINScraperManager
 from yfscraper.yfanalyzer import YFAnalyzer
 import csv
 
+TICKERS_FILENAME='tickers.csv'
+
 TICKERS=[]
-with open('tickers.csv','r') as csvfile:
+with open(TICKERS_FILENAME,'r') as csvfile:
     reader=csv.reader(csvfile,delimiter=";")
     for row in reader:
         TICKERS.append(row[0])
@@ -20,11 +22,12 @@ with open('analysis.csv','w',newline='') as csvfile:
                          'Cours/VANTPA',
                          'Cours/VANNPA',
                          'Solvabilité',
-                         'Rendement dividende'])
+                         'Rendement dividende %'])
     for t in TICKERS:
         manager=YFISINScraperManager(t)
-        line=YFAnalyzer(manager).get_analyze_line()
-        line.insert(0,t)
-        filewriter.writerow(line)
-        print(line)
+        if manager.yf_ticker!='':
+            line=YFAnalyzer(manager).get_analyze_line()
+            line.insert(0,t)
+            filewriter.writerow(line)
+            print(line)
 
