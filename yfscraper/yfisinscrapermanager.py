@@ -114,7 +114,7 @@ class YFISINScraperManager:
             self.yf_ticker=search_result.text
         except:
             print("Pas de résultat")
-            search_box.clear()
+            self.driver.get(YF_URL_ROOT)
 
     def get_tresorerie_totale(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie totale')[0]
