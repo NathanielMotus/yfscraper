@@ -1,17 +1,25 @@
 from selenium.webdriver.common.by import By
 from yfscraper import yfutilities
 
-BALANCE_SHEET_LINE_TITLES=("Trésorerie totale",
-                           "Total des actifs à court terme",
-                           "Investissements bruts en terrains, usines et équipements",
-                           "Clientèle",
-                           "Biens incorporels",
-                           "Total des actifs non circulants",
-                           "Total des actifs",
-                           "Total des passifs à court terme",
-                           "Total des passifs non à court terme",
-                           "Passifs totaux",
-                           "Total des capitaux propres")
+#historique
+#BALANCE_SHEET_LINE_TITLES=("Trésorerie totale",
+#                           "Total des actifs à court terme",
+#                           "Investissements bruts en terrains, usines et équipements",
+#                           "Clientèle",
+#                           "Biens incorporels",
+#                           "Total des actifs non circulants",
+#                           "Total des actifs",
+#                           "Total des passifs à court terme",
+#                           "Total des passifs non à court terme",
+#                           "Passifs totaux",
+#                           "Total des capitaux propres")
+#30/11/24 :
+BALANCE_SHEET_LINE_TITLES=("Total des actifs",
+                           "Actif à court terme",
+                           "Trésorerie",
+                           "Participation minoritaire au total des fonds propres bruts",#capitaux propres
+                           "Participation minoritaire",
+                           "Actifs corporels nets")
 
 BALANCE_SHEET_HEADER_TITLE='Détails'
 
@@ -33,8 +41,12 @@ class YFBalanceSheetScraper:
     # récupère le header, qui n'a pas le même format que les autres lignes
     def __get_header(self):
         try:
-            header_root=self.balance_sheet_webdriver.find_element(By.XPATH,"//span[text()='"+BALANCE_SHEET_HEADER_TITLE+"']").find_element(By.XPATH,"..").find_element(By.XPATH,"..")
-            header_list=header_root.find_elements(By.TAG_NAME,'span')
+            #historique
+            #header_root=self.balance_sheet_webdriver.find_element(By.XPATH,"//span[text()='"+BALANCE_SHEET_HEADER_TITLE+"']").find_element(By.XPATH,"..").find_element(By.XPATH,"..")
+            #header_list=header_root.find_elements(By.TAG_NAME,'span')
+            #30/11/24 :
+            header_root=self.balance_sheet_webdriver.find_element(By.XPATH,"//div[text()='"+BALANCE_SHEET_HEADER_TITLE+"']").find_element(By.XPATH,"..")
+            header_list=header_root.find_elements(By.TAG_NAME,'div')
             header_list_text=[]
             for i in range(1,len(header_list)):
                 header_list_text.append(header_list[i].text)
@@ -53,7 +65,7 @@ class YFBalanceSheetScraper:
     def __get_balance_sheet_line_by_title(self,title):
         line=[]
         if self.__find_balance_sheet_line_element_by_title(title)!=None:
-            line_elements=self.__find_balance_sheet_line_element_by_title(title).find_elements(By.XPATH,'.//*[text()!=""]') # type: ignore
+            line_elements=self.__find_balance_sheet_line_element_by_title(title).find_elements(By.XPATH,".//div[contains(@class,'column')]") # type: ignore
             for i in range(1,len(line_elements)):
                 line.append(yfutilities.parse_financials_number(line_elements[i]))
             self.balance_sheet[line_elements[0].text]=line

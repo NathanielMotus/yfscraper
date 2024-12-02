@@ -19,15 +19,20 @@ class YFStatScraper:
     
     def __get_market_price(self):
         try:
-            self.statistics['Cours']=float(self.stat_webdriver.find_element(By.XPATH,'//*[@data-test="qsp-price" and @data-field="regularMarketPrice"]').get_attribute('value'))
+            self.statistics['Cours']=float(self.stat_webdriver.find_element(By.XPATH,'//*[@data-testid="qsp-price" and @data-field="regularMarketPrice"]').get_attribute('data-value'))
         except:
             self.statistics['Cours']=0
 
     def __get_stat_by_text(self,text):
         try:
             # localise la racine
-            root=self.stat_webdriver.find_element(By.XPATH,"//span[contains(text(),'"+text+"')]").find_element(By.XPATH,"..").find_element(By.XPATH,"..")
+            #historique
+            #root=self.stat_webdriver.find_element(By.XPATH,"//span[contains(text(),'"+text+"')]").find_element(By.XPATH,"..").find_element(By.XPATH,"..")
+            #30/11/24 :
+            root=self.stat_webdriver.find_element(By.XPATH,"//td[contains(text(),'"+text+"')]").find_element(By.XPATH,"..")
             # récupère la valeur de la stat
+            #self.statistics[text]=yfutilities.parse_stat_number(root.find_elements(By.XPATH,'.//*[text()!=""]')[-1])
+            #30/11/24
             self.statistics[text]=yfutilities.parse_stat_number(root.find_elements(By.XPATH,'.//*[text()!=""]')[-1])
         except:
             self.statistics[text]=0

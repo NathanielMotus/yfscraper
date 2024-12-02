@@ -50,7 +50,9 @@ class YFISINScraperManager:
             # instancie yf_balance_sheet_scraper
             self.driver.get(YF_URL_ROOT+self.yf_ticker+YF_URL_BALANCE_SHEET_SUFFIX)
             # clique le bouton 'Trimestriel'
-            self.__wait_and_click_button_by_text('Trimestriel')
+            self.__wait_and_click_button_by_title('Trimestriel')
+            # clique le bouton 'tout développer'
+            self.__wait_and_click_button_by_text('Développer tout')
             self.yf_balance_sheet_scraper=YFBalanceSheetScraper(self.driver)
             # charge yf_balance_sheet_scraper
             self.yf_balance_sheet_scraper.get_balance_sheet()
@@ -88,7 +90,23 @@ class YFISINScraperManager:
         try:
             # attends que le bouton soit cliquable
             button=WebDriverWait(self.driver,10).until(
-                EC.element_to_be_clickable((By.XPATH,"//button/div/span[text()='"+button_text+"']"))
+                EC.element_to_be_clickable((By.XPATH,"//button/span[text()='"+button_text+"']"))
+            )
+
+            # clique le bouton
+            button.click()
+
+        except TimeoutException:
+            print("Pas de bouton")
+
+        except:
+            print("Problème inconnu")
+
+    def __wait_and_click_button_by_title(self,button_title):
+        try:
+            # attends que le bouton soit cliquable
+            button=WebDriverWait(self.driver,10).until(
+                EC.element_to_be_clickable((By.XPATH,"//button[@title='"+button_title+"']"))
             )
 
             # clique le bouton
@@ -106,33 +124,52 @@ class YFISINScraperManager:
         try:
             # attend 3 s qu'apparaisse la barre de recherche
             search_box = WebDriverWait(self.driver, 3).until(
-                EC.presence_of_element_located((By.ID, 'yfin-usr-qry')))
+                #historique des tags
+                #EC.presence_of_element_located((By.ID, 'yfin-usr-qry')))
+                #modif du 30/11/24 :
+                EC.presence_of_element_located((By.ID, 'ybar-sbq')))
             search_box.send_keys(self.yf_ISIN)
             search_result=WebDriverWait(self.driver,3).until(
-                EC.presence_of_element_located((By.XPATH,"//div[@srchresult='true']//div[contains(@class,'quoteSymbol')]"))
+                #historique
+                #EC.presence_of_element_located((By.XPATH,"//div[@srchresult='true']//div[contains(@class,'quoteSymbol')]"))
+                #30/11/24 :
+                EC.presence_of_element_located((By.XPATH,"//li[@data-test='srch-sym']//div[contains(@class,'quoteSymbol')]"))
             )
             self.yf_ticker=search_result.text
+            search_box.clear()
+            print(self.yf_ticker)
         except:
             print("Pas de résultat")
             self.driver.get(YF_URL_ROOT)
 
-    def get_tresorerie_totale(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie totale')[0]
+    
     
     def get_actifs_circulants(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Total des actifs à court terme')[0]
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Actif à court terme')[0]
+    
+    def get_tresorerie(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie')[0]
     
     def get_actifs_intangibles(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Clientèle')[0]+self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title("Biens incorporels")[0]
     
     def get_actifs_totaux(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title("Total des actifs")[0]
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Total des actifs')[0]
     
     def get_dette_totale(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title("Passifs totaux")[0]
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Passifs totaux')[0]
     
     def get_capitaux_propres(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title("Total des capitaux propres")[0]
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Participation minoritaire au total des fonds propres bruts')[0]
+        
+    def get_actifs_corporels_net(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Actifs corporels nets')[0]
+    
+    def get_total_des_actifs(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Total des actifs')[0]
+    
+    def get_participation_minoritaire(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Participation minoritaire')[0]
     
     def get_cours(self):
         return self.yf_stat_scraper.get_stat_by_title("Cours")

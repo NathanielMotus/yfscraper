@@ -6,8 +6,9 @@ class YFAnalyzer:
         self.yf_scraper_manager=yf_scraper_manager
 
     def __get_VANTPA(self):
+        print(self.yf_scraper_manager.get_actions())
         if self.yf_scraper_manager.get_actions()!=0:
-            return float(format((self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_actifs_intangibles())/self.yf_scraper_manager.get_actions(),'.2f'))
+            return float(format((self.yf_scraper_manager.get_actifs_corporels_net()+(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_capitaux_propres()+self.yf_scraper_manager.get_participation_minoritaire()))/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
             return 0
         
@@ -19,7 +20,7 @@ class YFAnalyzer:
     
     def __get_VANNPA(self):
         if self.yf_scraper_manager.get_actions()!=0:
-            return float(format((self.yf_scraper_manager.get_actifs_circulants()-self.yf_scraper_manager.get_dette_totale())/self.yf_scraper_manager.get_actions(),'.2f'))
+            return float(format((self.yf_scraper_manager.get_actifs_circulants()+(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_capitaux_propres()+self.yf_scraper_manager.get_participation_minoritaire()))/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
             return 0
         
@@ -31,7 +32,7 @@ class YFAnalyzer:
         
     def __get_solvabilite(self):
         try:
-            return float(format((self.yf_scraper_manager.get_capitaux_propres()/(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_tresorerie_totale())),'.2f'))
+            return float(format(((self.yf_scraper_manager.get_capitaux_propres()-self.yf_scraper_manager.get_participation_minoritaire())/(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_tresorerie())),'.2f'))
         except:
             return 0
         

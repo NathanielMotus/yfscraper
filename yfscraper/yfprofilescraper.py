@@ -16,7 +16,7 @@ class YFProfileScraper:
 
     def __get_name(self):
         try:
-            self.profile['Nom']=self.profile_webdriver.find_element(By.XPATH,"//div[@id='Main']//h3").text
+            self.profile['Nom']=self.profile_webdriver.find_element(By.XPATH,"//section[@data-testid='asset-profile']//h3").text
         except:
             self.profile['Nom']=''
 

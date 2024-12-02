@@ -1,0 +1,5 @@
+VANT = actif corporel net + (actif total - capitaux propres + participation minoritaire)
+
+VANN = actif à court terme - (actif total - capitaux propres + participation minoritaire)
+
+Solvabilité = (capitaux propres - participation minoritaire)/(actif total - trésoserie)
