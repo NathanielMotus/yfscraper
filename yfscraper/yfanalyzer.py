@@ -6,7 +6,6 @@ class YFAnalyzer:
         self.yf_scraper_manager=yf_scraper_manager
 
     def __get_VANTPA(self):
-        print(self.yf_scraper_manager.get_actions())
         if self.yf_scraper_manager.get_actions()!=0:
             return float(format((self.yf_scraper_manager.get_actifs_corporels_net()+(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_capitaux_propres()+self.yf_scraper_manager.get_participation_minoritaire()))/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
