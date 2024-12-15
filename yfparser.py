@@ -15,6 +15,7 @@ with open(ISIN_FILENAME,'r') as csvfile:
 with open('analysis.csv','a',newline='') as csvfile:
     filewriter=csv.writer(csvfile,delimiter=";")
     filewriter.writerow(['ISIN',
+                         'Ticker',
                          'Secteur',
                          'Activité',
                          'Website',
@@ -33,6 +34,7 @@ for t in ISIN:
     if manager.yf_ticker!='':
         try:
             line=YFAnalyzer(manager).get_analyze_line()
+            line.insert(0,manager.yf_ticker)
             line.insert(0,t)
             with open('analysis.csv','a',newline='') as csvfile:
                 filewriter=csv.writer(csvfile,delimiter=";")

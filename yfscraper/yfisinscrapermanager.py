@@ -15,13 +15,17 @@ YF_URL_ROOT="https://fr.finance.yahoo.com/quote/"
 YF_URL_BALANCE_SHEET_SUFFIX="/balance-sheet"
 YF_URL_STAT_SUFFIX="/key-statistics"
 YF_URL_PROFILE_SUFFIX="/profile"
-UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
+#UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
+UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.61.2.crx"
 
 
 class YFISINScraperManager:
     is_driver_started=False
     counter=0
-    options=FirefoxOptions()
+    #options=FirefoxOptions()
+    options=webdriver.ChromeOptions()
+    options.add_extension(UBLOCK_EXTENSION_PATH)
+    options.add_argument("--start-maximized")
     options.add_argument("-headless")
     #driver=webdriver.Firefox(service=FFService(),options=options)
         
@@ -79,8 +83,9 @@ class YFISINScraperManager:
             self.rejected_isin=self.yf_ISIN
 
     def __start_driver(self):
-        YFISINScraperManager.driver=webdriver.Firefox(service=FFService(),options=YFISINScraperManager.options)
-        YFISINScraperManager.driver.install_addon(UBLOCK_EXTENSION_PATH,temporary=True)
+        #YFISINScraperManager.driver=webdriver.Firefox(service=FFService(),options=YFISINScraperManager.options)
+        YFISINScraperManager.driver=webdriver.Chrome(options=YFISINScraperManager.options)
+        #YFISINScraperManager.driver.install_addon(UBLOCK_EXTENSION_PATH,temporary=True)
         YFISINScraperManager.driver.get(YF_URL_LOOKUP)
         YFISINScraperManager.is_driver_started=True
 
@@ -92,8 +97,8 @@ class YFISINScraperManager:
                 EC.presence_of_element_located((By.CLASS_NAME, 'consent-overlay')))
     
             # click "scroll down" button
-            scroll_down_button=consent_overlay.find_element(By.ID,'scroll-down-btn')
-            scroll_down_button.click()
+            #scroll_down_button=consent_overlay.find_element(By.ID,'scroll-down-btn')
+            #scroll_down_button.click()
 
             # click the "Accept all" button
             accept_all_button = consent_overlay.find_element(By.NAME, 'agree')
