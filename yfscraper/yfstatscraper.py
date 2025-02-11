@@ -19,7 +19,8 @@ class YFStatScraper:
     
     def __get_market_price(self):
         try:
-            self.statistics['Cours']=float(self.stat_webdriver.find_element(By.XPATH,'//*[@data-testid="qsp-price" and @data-field="regularMarketPrice"]').get_attribute('data-value'))
+            #self.statistics['Cours']=float(self.stat_webdriver.find_element(By.XPATH,'//*[@data-testid="qsp-price" and @data-field="regularMarketPrice"]').get_attribute('data-value'))
+            self.statistics['Cours']=yfutilities.parse_stat_number(self.stat_webdriver.find_element(By.XPATH,'//*[@data-testid="qsp-price"]'))
         except:
             self.statistics['Cours']=0
 

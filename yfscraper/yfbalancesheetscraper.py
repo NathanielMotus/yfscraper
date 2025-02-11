@@ -14,12 +14,27 @@ from yfscraper import yfutilities
 #                           "Passifs totaux",
 #                           "Total des capitaux propres")
 #30/11/24 :
-BALANCE_SHEET_LINE_TITLES=("Total des actifs",
-                           "Actif à court terme",
-                           "Trésorerie",
-                           "Participation minoritaire au total des fonds propres bruts",#capitaux propres
-                           "Participation minoritaire",
-                           "Actifs corporels nets")
+#BALANCE_SHEET_LINE_TITLES=("Total des actifs",
+#                           "Actif à court terme",
+#                           "Trésorerie",
+#                           "Participation minoritaire au total des fonds propres bruts",#capitaux propres
+#                           "Participation minoritaire",
+#                           "Actifs corporels nets")
+
+#11/02/25
+#A revoir :
+#VANT="Valeur comptable tangible"
+#VANN="Valeur comptable tangible"-"Total des actifs non circulants"+"Écarts d’acquisition et autres immobilisations incorporelles"
+#VANE=VANN+"Autres propriétés"
+
+BALANCE_SHEET_LINE_TITLES=("Valeur comptable tangible",
+                           "Total des actifs",
+                           "Total des actifs non circulants",
+                           "Trésorerie, quasi-espèces et investissements à court terme",
+                           "Écarts d’acquisition et autres immobilisations incorporelles",
+                           "Autres propriétés",
+                           "Participation minoritaire au total des fonds propres bruts",
+                           "Participation minoritaire")
 
 BALANCE_SHEET_HEADER_TITLE='Détails'
 

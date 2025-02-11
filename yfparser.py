@@ -2,7 +2,7 @@ from yfscraper.yfisinscrapermanager import YFISINScraperManager
 from yfscraper.yfanalyzer import YFAnalyzer
 import csv
 
-ISIN_FILENAME='isin.csv'
+ISIN_FILENAME='isin suivis.csv'
 DONE_FILENAME='done.csv'
 reject_counter=1
 

@@ -168,7 +168,7 @@ class YFISINScraperManager:
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Actif à court terme')[0]
     
     def get_tresorerie(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie')[0]
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Trésorerie, quasi-espèces et investissements à court terme')[0]
     
     def get_actifs_intangibles(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Clientèle')[0]+self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title("Biens incorporels")[0]
@@ -190,6 +190,18 @@ class YFISINScraperManager:
     
     def get_participation_minoritaire(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Participation minoritaire')[0]
+    
+    def get_valeur_comptable_tangible(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Valeur comptable tangible')[0]
+    
+    def get_actifs_non_circulants(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Total des actifs non circulants')[0]
+    
+    def get_immobilisations_incorporelles(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Écarts d’acquisition et autres immobilisations incorporelles')[0]
+    
+    def get_estate(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Autres propriétés')[0]
     
     def get_cours(self):
         return self.yf_stat_scraper.get_stat_by_title("Cours")

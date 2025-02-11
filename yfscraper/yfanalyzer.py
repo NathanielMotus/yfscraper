@@ -7,7 +7,7 @@ class YFAnalyzer:
 
     def __get_VANTPA(self):
         if self.yf_scraper_manager.get_actions()!=0:
-            return float(format((self.yf_scraper_manager.get_actifs_corporels_net()+(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_capitaux_propres()+self.yf_scraper_manager.get_participation_minoritaire()))/self.yf_scraper_manager.get_actions(),'.2f'))
+            return float(format(self.yf_scraper_manager.get_valeur_comptable_tangible()/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
             return 0
         
@@ -19,7 +19,7 @@ class YFAnalyzer:
     
     def __get_VANNPA(self):
         if self.yf_scraper_manager.get_actions()!=0:
-            return float(format((self.yf_scraper_manager.get_actifs_circulants()+(self.yf_scraper_manager.get_actifs_totaux()-self.yf_scraper_manager.get_capitaux_propres()+self.yf_scraper_manager.get_participation_minoritaire()))/self.yf_scraper_manager.get_actions(),'.2f'))
+            return float(format((self.yf_scraper_manager.get_valeur_comptable_tangible()-(self.yf_scraper_manager.get_actifs_non_circulants()-self.yf_scraper_manager.get_immobilisations_incorporelles()))/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
             return 0
         
