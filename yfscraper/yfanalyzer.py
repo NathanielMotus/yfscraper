@@ -41,6 +41,18 @@ class YFAnalyzer:
         except:
             return 0
         
+    def __get_VANEPA(self):
+        if self.yf_scraper_manager.get_actions()!=0:
+            return float(format((self.yf_scraper_manager.get_valeur_comptable_tangible()-(self.yf_scraper_manager.get_actifs_non_circulants()-self.yf_scraper_manager.get_immobilisations_incorporelles())+self.yf_scraper_manager.get_estate())/self.yf_scraper_manager.get_actions(),'.2f'))
+        else:
+            return 0
+        
+    def __get_ratio_cours_VANEPA(self):
+        if self.__get_VANEPA()!=0:
+            return float(format(self.yf_scraper_manager.get_cours()/float(self.__get_VANEPA()),'.2f'))
+        else:
+            return 0
+        
     def get_analyze_line(self):
         return ([self.yf_scraper_manager.get_secteur(),
                  self.yf_scraper_manager.get_activite(),
@@ -50,5 +62,6 @@ class YFAnalyzer:
                  self.__get_VANTPA(),
                  self.__get_ratio_cours_VANTPA(),
                  self.__get_ratio_cours_VANNPA(),
+                 self.__get_ratio_cours_VANEPA(),
                  self.__get_solvabilite(),
                  self.__get_rendement_moyen_dividendes()])

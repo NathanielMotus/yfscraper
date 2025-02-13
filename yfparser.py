@@ -24,6 +24,7 @@ with open('analysis.csv','a',newline='') as csvfile:
                          'VANTPA',
                          'Cours/VANTPA',
                          'Cours/VANNPA',
+                         'Cours/VANEPA',
                          'Solvabilité',
                          'Rendement dividende %'])
     

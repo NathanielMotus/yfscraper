@@ -25,14 +25,15 @@ from yfscraper import yfutilities
 #A revoir :
 #VANT="Valeur comptable tangible"
 #VANN="Valeur comptable tangible"-"Total des actifs non circulants"+"Écarts d’acquisition et autres immobilisations incorporelles"
-#VANE=VANN+"Autres propriétés"
+#VANE=VANN+"Foncier et améliorations"+"Constructions et améliorations"
 
 BALANCE_SHEET_LINE_TITLES=("Valeur comptable tangible",
                            "Total des actifs",
                            "Total des actifs non circulants",
                            "Trésorerie, quasi-espèces et investissements à court terme",
                            "Écarts d’acquisition et autres immobilisations incorporelles",
-                           "Autres propriétés",
+                           "Foncier et améliorations",
+                           "Constructions et améliorations",
                            "Participation minoritaire au total des fonds propres bruts",
                            "Participation minoritaire")
 

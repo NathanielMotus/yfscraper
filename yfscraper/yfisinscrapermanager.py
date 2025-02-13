@@ -200,8 +200,14 @@ class YFISINScraperManager:
     def get_immobilisations_incorporelles(self):
         return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Écarts d’acquisition et autres immobilisations incorporelles')[0]
     
+    def __get_foncier(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Foncier et améliorations')[0]
+    
+    def __get_constructions(self):
+        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Constructions et améliorations')[0]
+    
     def get_estate(self):
-        return self.yf_balance_sheet_scraper.get_balance_sheet_item_by_title('Autres propriétés')[0]
+        return self.__get_constructions()+self.__get_foncier()
     
     def get_cours(self):
         return self.yf_stat_scraper.get_stat_by_title("Cours")
