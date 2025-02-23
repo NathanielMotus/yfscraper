@@ -43,7 +43,7 @@ class YFAnalyzer:
         
     def __get_VANEPA(self):
         if self.yf_scraper_manager.get_actions()!=0:
-            return float(format((self.yf_scraper_manager.get_valeur_comptable_tangible()-(self.yf_scraper_manager.get_actifs_non_circulants()-self.yf_scraper_manager.get_immobilisations_incorporelles())+self.yf_scraper_manager.get_estate())/self.yf_scraper_manager.get_actions(),'.2f'))
+            return float(format((self.yf_scraper_manager.get_valeur_comptable_tangible()-(self.yf_scraper_manager.get_actifs_non_circulants()-self.yf_scraper_manager.get_immobilisations_incorporelles())+0.8*self.yf_scraper_manager.get_estate())/self.yf_scraper_manager.get_actions(),'.2f'))
         else:
             return 0
         
