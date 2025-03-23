@@ -15,18 +15,23 @@ YF_URL_ROOT="https://fr.finance.yahoo.com/quote/"
 YF_URL_BALANCE_SHEET_SUFFIX="/balance-sheet"
 YF_URL_STAT_SUFFIX="/key-statistics"
 YF_URL_PROFILE_SUFFIX="/profile"
-#UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
-UBLOCK_EXTENSION_PATH="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.61.2.crx"
+#UBLOCK_EXTENSION_PATH_FF="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.57.2.xpi"
+UBLOCK_EXTENSION_PATH_FF="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\uBlock0_1.63.2.firefox.signed.xpi"
+UBLOCK_EXTENSION_PATH_CHROME="D:\\Dossier Nanat\\31-Python\\yfscraper\\yfscraper\\extensions\\ublock_origin-1.61.2.crx"
 
 
 class YFISINScraperManager:
     is_driver_started=False
     counter=0
-    #options=FirefoxOptions()
-    options=webdriver.ChromeOptions()
-    options.add_extension(UBLOCK_EXTENSION_PATH)
-    options.add_argument("--start-maximized")
-    options.add_argument("-headless")
+    #Chrome
+    #options=webdriver.ChromeOptions()
+    #options.add_extension(UBLOCK_EXTENSION_PATH_CHROME)
+    #options.add_argument("--start-maximized")
+    #options.add_argument("-headless")
+
+    #Firefox
+    options=webdriver.FirefoxOptions()
+    options.add_argument("--headless")
     #driver=webdriver.Firefox(service=FFService(),options=options)
         
     def __init__(self,yf_ISIN,reject_counter) -> None:
@@ -43,6 +48,7 @@ class YFISINScraperManager:
         # démarre yf et accepte les cookies si ce n'est pas déjà fait
         if not YFISINScraperManager.is_driver_started:
             self.__start_driver()
+        YFISINScraperManager.driver.get(YF_URL_LOOKUP)
 
         # récupère le ticker
         self.__get_ticker_by_ISIN()
@@ -83,15 +89,18 @@ class YFISINScraperManager:
             self.rejected_isin=self.yf_ISIN
 
     def __start_driver(self):
-        #YFISINScraperManager.driver=webdriver.Firefox(service=FFService(),options=YFISINScraperManager.options)
-        YFISINScraperManager.driver=webdriver.Chrome(options=YFISINScraperManager.options)
-        #YFISINScraperManager.driver.install_addon(UBLOCK_EXTENSION_PATH,temporary=True)
-        YFISINScraperManager.driver.get(YF_URL_LOOKUP)
-        YFISINScraperManager.is_driver_started=True
+        YFISINScraperManager.driver=webdriver.Firefox(options=YFISINScraperManager.options)
+        #YFISINScraperManager.driver=webdriver.Chrome(options=YFISINScraperManager.options)
+        YFISINScraperManager.driver.maximize_window()
+        YFISINScraperManager.driver.set_window_size(1920,1080)
+        YFISINScraperManager.driver.install_addon(UBLOCK_EXTENSION_PATH_FF,temporary=True)
 
-
-        # démarre le driver sur une page vierge
         try:
+            YFISINScraperManager.driver.get(YF_URL_LOOKUP)
+            YFISINScraperManager.is_driver_started=True
+
+
+            # démarre le driver sur une page vierge
             # wait up to 3 seconds for the consent modal to show up
             consent_overlay = WebDriverWait(YFISINScraperManager.driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'consent-overlay')))

@@ -2,7 +2,7 @@ from yfscraper.yfisinscrapermanager import YFISINScraperManager
 from yfscraper.yfanalyzer import YFAnalyzer
 import csv
 
-ISIN_FILENAME='isin suivis.csv'
+ISIN_FILENAME='isin.csv'
 DONE_FILENAME='done.csv'
 reject_counter=1
 
@@ -49,5 +49,5 @@ for t in ISIN:
     else :
         ISIN.append(manager.rejected_isin)
         #remet à 0 le compteur tous les x
-        reject_counter=(reject_counter+1)%20
+        reject_counter=(reject_counter+1)%10
 
