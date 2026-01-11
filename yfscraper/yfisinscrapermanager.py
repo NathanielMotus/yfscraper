@@ -31,7 +31,7 @@ class YFISINScraperManager:
 
     #Firefox
     options=webdriver.FirefoxOptions()
-    options.add_argument("--headless")
+    #options.add_argument("--headless")
     #driver=webdriver.Firefox(service=FFService(),options=options)
         
     def __init__(self,yf_ISIN,reject_counter) -> None:
@@ -152,13 +152,13 @@ class YFISINScraperManager:
     def __get_ticker_by_ISIN(self):
         try:
             # attend 3 s qu'apparaisse la barre de recherche
-            search_box = WebDriverWait(YFISINScraperManager.driver, 3).until(
+            search_box = WebDriverWait(YFISINScraperManager.driver, 1).until(
                 #historique des tags
                 #EC.presence_of_element_located((By.ID, 'yfin-usr-qry')))
                 #modif du 30/11/24 :
                 EC.presence_of_element_located((By.ID, 'ybar-sbq')))
             search_box.send_keys(self.yf_ISIN)
-            search_result=WebDriverWait(YFISINScraperManager.driver,3).until(
+            search_result=WebDriverWait(YFISINScraperManager.driver,1).until(
                 #historique
                 #EC.presence_of_element_located((By.XPATH,"//div[@srchresult='true']//div[contains(@class,'quoteSymbol')]"))   //div[contains(@class,'quoteSymbol')]
                 #30/11/24 :
@@ -170,7 +170,7 @@ class YFISINScraperManager:
         except:
             print("Pas de résultat")
             self.rejected_isin=self.yf_ISIN
-            YFISINScraperManager.driver.get(YF_URL_ROOT)
+            #YFISINScraperManager.driver.get(YF_URL_ROOT)
             
 
     def get_actifs_circulants(self):
