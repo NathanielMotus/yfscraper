@@ -53,6 +53,13 @@ class YFAnalyzer:
         else:
             return 0
         
+    def __get_FCFPA_actualises(self):
+        #renvoie les cash flow moyens actualisés à 12%
+        try:
+            return float(format(self.yf_scraper_manager.get_fcf_moyens()/self.yf_scraper_manager.get_actions()*1.12/.12,'.2f'))
+        except:
+            return 0
+        
     def get_analyze_line(self):
         return ([self.yf_scraper_manager.get_secteur(),
                  self.yf_scraper_manager.get_activite(),
@@ -64,4 +71,5 @@ class YFAnalyzer:
                  self.__get_ratio_cours_VANNPA(),
                  self.__get_ratio_cours_VANEPA(),
                  self.__get_solvabilite(),
-                 self.__get_rendement_moyen_dividendes()])
+                 self.__get_rendement_moyen_dividendes(),
+                 self.__get_FCFPA_actualises()])

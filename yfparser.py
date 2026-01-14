@@ -1,8 +1,9 @@
 from yfscraper.yfisinscrapermanager import YFISINScraperManager
+from yfscraper.yfdisposableisinscrapermanager import YFDisposableISINScraperManager
 from yfscraper.yfanalyzer import YFAnalyzer
 import csv
 
-ISIN_FILENAME='isinfr20251020.csv'
+ISIN_FILENAME='ISINEURO.csv'
 DONE_FILENAME='done.csv'
 reject_counter=1
 
@@ -26,9 +27,11 @@ with open('analysis.csv','a',newline='') as csvfile:
                          'Cours/VANNPA',
                          'Cours/VANEPA',
                          'Solvabilité',
-                         'Rendement dividende %'])
+                         'Rendement dividende %',
+                         'FCFPA actualisés'])
     
 for t in ISIN:
+    #manager=YFDisposableISINScraperManager(t)
     manager=YFISINScraperManager(t,reject_counter)
     if reject_counter==0:
         reject_counter=1
@@ -50,4 +53,6 @@ for t in ISIN:
         ISIN.append(manager.rejected_isin)
         #remet à 0 le compteur tous les x
         reject_counter=(reject_counter+1)%10
+
+    #YFDisposableISINScraperManager.kill_driver(manager)
 

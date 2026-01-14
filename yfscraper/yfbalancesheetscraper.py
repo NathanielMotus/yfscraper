@@ -35,7 +35,8 @@ BALANCE_SHEET_LINE_TITLES=("Valeur comptable tangible",
                            "Foncier et améliorations",
                            "Constructions et améliorations",
                            "Participation minoritaire au total des fonds propres bruts",
-                           "Participation minoritaire")
+                           "Participation minoritaire",
+                           "Nombre d’actions ordinaires")
 
 BALANCE_SHEET_HEADER_TITLE='Détails'
 
