@@ -3,7 +3,7 @@ from yfscraper.yfdisposableisinscrapermanager import YFDisposableISINScraperMana
 from yfscraper.yfanalyzer import YFAnalyzer
 import csv
 
-ISIN_FILENAME='ISINEURO.csv'
+ISIN_FILENAME='ISIN20260116.csv'
 DONE_FILENAME='done.csv'
 reject_counter=1
 

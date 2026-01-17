@@ -44,8 +44,7 @@ class YFISINScraperManager:
 
         # si le reject_counter est nul est que le driver est démarré, on l'arrête
         if self.reject_counter==0 and YFISINScraperManager.is_driver_started==True:
-            YFISINScraperManager.driver.quit()
-            YFISINScraperManager.is_driver_started=False
+            self.__kill_driver()
         
         # démarre yf et accepte les cookies si ce n'est pas déjà fait
         try:
@@ -96,8 +95,7 @@ class YFISINScraperManager:
                 # penser à quitter le driver quand c'est fini
                 #self.driver.quit
         except:
-            YFISINScraperManager.driver.quit
-            YFISINScraperManager.is_driver_started=False
+            self.__kill_driver()
             self.rejected_isin=self.yf_ISIN
 
     def __start_driver(self):
@@ -120,7 +118,7 @@ class YFISINScraperManager:
 
             # démarre le driver sur une page vierge
             # wait up to 3 seconds for the consent modal to show up
-            accept_button=WebDriverWait(YFISINScraperManager.driver,3).until(
+            accept_button=WebDriverWait(YFISINScraperManager.driver,1).until(
                 EC.presence_of_element_located((By.XPATH,"//button//span[text()='Accepter tout']")))
             #consent_overlay = WebDriverWait(YFDisposableISINScraperManager.driver, 300).until(
             #    EC.presence_of_element_located((By.CLASS_NAME, 'consent-overlay')))
@@ -134,13 +132,14 @@ class YFISINScraperManager:
             pass
 
         try:
-            accept_button=WebDriverWait(YFISINScraperManager.driver,3).until(
+            accept_button=WebDriverWait(YFISINScraperManager.driver,1).until(
                 EC.presence_of_element_located((By.XPATH,"//button[text()='Accepter tout']")))
             return accept_button
 
         except TimeoutException:
             self.rejected_isin=self.yf_ISIN
             print('Cookie consent overlay missing')
+            self.__kill_driver()
             return None
 
     def __wait_and_click_button_by_text(self,button_text):
@@ -194,7 +193,6 @@ class YFISINScraperManager:
             )
             self.yf_ticker=search_result.text
             search_box.clear()
-            print(self.yf_ticker)
         except:
             print("Pas de résultat")
             self.rejected_isin=self.yf_ISIN
@@ -280,3 +278,7 @@ class YFISINScraperManager:
             return fcf/count
         except:
             return 0
+        
+    def __kill_driver(self):
+        YFISINScraperManager.driver.quit()
+        YFISINScraperManager.is_driver_started=False
